@@ -1,0 +1,202 @@
+Attendees: Henry Story, Stéphane Corlosquet, Manu Sporny, Dave Longley, Toby
+Inkster, David I. Lehn, Reto Bachmann-Gmür, Mike Johnson, Doug Schepers, and
+one anonymous attendee.
+
+Scribe: Stéphane Corlosquet
+
+Audio logs: http://getwebid.org/meetings/
+
+Agenda:
+1) High-level overview of telecon bridge, IRC, operations, etc.
+2) Discuss short-term (spec) and long-term goals (PaySwarm)
+3) Requiring only one serialization (RDFa) vs. two (RDFa + RDF/XML)
+4) Integration of FOAF and other vocabs into normative text for WebID
+
+
+Minutes:
+
+2) Discuss short-term (spec) and long-term goals (PaySwarm)
+===========================================================
+
+Henry: WebID is working, we have implementations in many languages. What we
+need is make it more specy and get it on the W3C website ideally. Make it
+clean and easy to understand. Basic spec has to be very minimal, easy for
+people to understand, be verified by a lot of different people from various
+fields (security, etc.). Keep in mind everything is working at the moment.
+
+Manu: we should be able to get a fairly accurate, complete spec in less than
+6 months (maybe 3 months).
+
+Doug: the faster you can move, the better. I support the idea of iterating
+quickly. We can make an interest group around this, but might not be more
+effective. I volunteer to bring WebID toward a W3C rec track, though we
+don't need to discuss W3C matters now.
+
+Manu: everyone would be happy if WebID was brought on a W3C rec track,
+that's the goal for everyone.
+
+Doug: I would not be surprised if W3C started to have an interest in
+identity online (OpenID, FOAF), that's another way "in" to get WebID on W3C
+rec track.
+
+Henry: 2 layers: (1) core WebID, and (2) there is another layer above which
+ties WebID with OpenID: openid4me (could be standardized). Other projects to
+tie WebID into the other identity schemes out there.
+
+Manu: re. long term goals. We know WebID as a universal login mechanism and
+we have some use cases to demonstrate it, but we might need something else
+to complete the story, to show people why it's useful to have a universal
+identity along with info which you can associate with, and how you can
+relate it to the rest of your activities online, e.g. list you name, email,
+picture, plus other services like twitter as your microblogging, facebook as
+your social network, payswarm as your transaction service, etc.
+You can use WebID to integrate with openID, but also use WebID in the OpenId
+protocol for example for OpenID providers to verify the HMAC signature: the
+key being not only can you use WebID as an OpenID, but it can be part of the
+core OpenID protocol as well. See WebID not only as universal ID, but see it
+to help other services like twitter and facebook. ACTION: create an
+"Integrating WebID with other identities" document.
+
+Reto: Conflict of interest between integrating all the other services with
+WebID and keeping the WebID spec small and beautiful. There is too much
+about OpenID in the current spec, could be moved at the bottom or in an
+appendix.
+
+Henry: or move it to a different document.
+
+Stephane: it's still good to keep some aspects of OpenID in the main spec as
+a mean to explain what WebID is in comparison to OpenID, but not to the
+extend as it is now in the related to openID section, which could be moved
+to another document.
+
+Henry: the more core is technology agnostic, the longer it will be valid.
+Specifics or comparison with other technologies should be placed into
+separate documents. It also allows us to save time and rapidly get the core
+spec published, and spend more time later on these other matters.
+
+Manu: what about putting this into a primer?
+
+Henry: makes sense
+
+Reto: primer should be something else. primer should explain implementers
+how to provide a WebID and authenticate with WebID but the OpenID comparison
+should live elsewhere.
+
+Manu: several documents: core spec, use cases and requirements, primer,
+comparison with OpenID. volunteers needed.
+
+Henry: the benefit of this is it will simplify writing the core spec. we
+should not get distracted by the specs, we need cool demos too and
+attractive apps that people will want to use.
+
+Reto: postpone the primer for now. The technical details should be in the
+spec, not in the primer. Spec should cover everything semantically with the
+right ontologies, authentication mechanism, but maybe reference the RDF spec
+when it comes to serialization formats. I'm still in favor of MUST
+requirement on the parsing side for RDFa and RDF/XML.
+
+Manu: we can move the OpenID comparison into a separate document and
+elaborate on that later.
+
+
+3) Requiring only one serialization (RDFa) vs. two (RDFa + RDF/XML)
+===================================================================
+
+Manu: issue is if there are 2 serialization formats, the risk is it may be
+more difficult for people to implement WebID.
+
+Henry: that's why we started with RDF/XML, but we have enough
+implementations now and these 2 formats are fairly common nowadays. You can
+also use XSLT to transform RDFa into RDF/XML if necessary. Also, RDFa is
+easy to integrate for sites which don't support RDF/XML. From a practical
+experience I have not seen any major problem with having the 2 formats. On
+the MUST/MUSTNOT issue, we can explain semantically what to do to implement
+WebID (MUST) and then in a footnote say why RDF/XML and RDFa are the key
+formats, but not tie ourselves to these formats to leave the door open for
+new formats to come in the game.
+
+Reto: having 2 parsers on the verification agent side is not a problem. keep
+it as easy as possible on the publishing side (only one format is enough:
+RDF/XML or RDFa).
+
+Manu: people agree it's not a big deal to have 2 formats. PROPOSAL: Explain
+the WebID Profile document in RDF terms, support both RDF/XML and RDFa as
+serialization formats.
+
+5 votes in favor of this proposal.
+
+Doug: but we should consider other serializations. Many are resistant to the
+idea of using RDF, so it would be best to mention other shorthand notations
+as well.
+
+Henry: that's why we need to phrase it in terms of automatic
+transformability of a serialization into an RDF model.
+
+Reto: but to guarantee interoperability, we must specify the formats that
+the verification side should understand.
+
+Henry: be very strong on RDFa and RDF/XML and leave it open for new formats
+which translates to RDF (mandatory). If people produce a lot of data into a
+new format, as long as there is a good transformation path into RDF, then it
+works. For the moment the most practical way of getting started is RDF as
+RDFa and RDF/XML.
+
+Manu: RESOLVED: Explain the WebID Profile document in RDF terms, support
+both RDF/XML and RDFa as serialization formats.
+
+Doug: if people don't like what you do, they will typically do something
+completely different, they won't build on it. In terms of building momentum,
+I don't agree that's the best way to do it. The key to RDF is that it is
+extensible, but these format don't have to be extensible in the same way.
+Someone could build a new format which has built-in assumptions. WebID does
+not have to be extensible in the same way RDF does.
+
+Henry: I agree, that's why the whole thing is defined semantically. The core
+requirement we need is simply an automatic way to transform any format into
+RDF.
+
+Doug: what is the criteria to be transformable in RDF? any format is good
+enough and could technically be transformed into RDF.
+
+Henry: machine can find out the mimetype, lookup a transformation mechanism
+to get it into RDF triples which happens automatically without requiring any
+human interaction. GRDDL and XSPARQL could help building bridges between
+other formats and RDF. Any XML format could be usable. We don't want it to
+be too complicated (so start with two first). Add a paragraph on
+extensibility and tell our readers how they can integrate their format with
+WebID. Within the next year, we will see of more formats come up and we'll
+decide if we should include them.
+
+Do you think we should mandate GRDDL in the spec?
+
+Henry: we need to look at the issue, in particular the man in the middle
+when retrieving an GRDDL transformation via HTTP. JSON should also be
+considered. Allow these extensions to appear, but we don't want to stop
+improving the existing implementations just because these other technologies
+haven't been integrated yet.
+
+Manu: We can phrase it as follows: right now we support RDFa and RDF/XML but
+any format which can be transformed into RDF triples can be integrated with
+WebID. The formats which will work out of the box are RDFa, RDF/XML or other
+RDF serializations.
+
+Doug: caution against talking about it as RDF in order to keep communities
+who don't like the RDF solutions. Define the semantics as the normative
+requirement, and keep things like RDFa as a possible serializations. Maybe
+key value pairs would work.
+
+Henry: key value pairs would work if they are linked to a mimetype. Let's
+see how we can phrase that. Use XSPARQL to transform a well known format out
+there into RDF.
+
+Manu volunteers to do a JSON-LD and Stephane volunteers to do an example
+with XSPARQL.
+
+End of the hour, everyone agrees to have on a conf call every two weeks.
+
+
+4) Integration of FOAF and other vocabs into normative text for WebID
+=====================================================================
+(This topic was not discussed).
+
+End of minutes.
