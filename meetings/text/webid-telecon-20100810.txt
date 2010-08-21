@@ -1,0 +1,449 @@
+Attendees: Manu Sporny, Henry Story, Stéphane Corlosquet, Dave Longley, 
+David I. Lehn, Mike Johnson, Reto Bachmann-Gmur, and Doug Schepers.
+
+Scribe: Manu Sporny
+
+Audio logs: http://getwebid.org/meetings/#2010-08-10
+
+Agenda:
+
+1) Updates to Telecon Bridge
+2) Bug Tracking
+3) Javascript + Flash WebID Implementation
+4) WebID Profile Serialization Format
+5) Flash+Javascript Implementation Details
+
+Minutes:
+
+Manu: On the Agenda - updates to telecon bridge, pure JS+Flash WebID 
+implementation, spec language on any RDF serialization format for WebID 
+profiles, integrating FOAF and other vocabs into normative text. Any other
+additions to agenda?
+
+Reto: What about formatting of spec - make it minimal.
+
+Manu: So, splitting the spec? 
+
+Reto: Just spec formatting, editing best practices, things like that.
+
+Manu: Want to talk about it at the beginning or end?
+
+Reto: The end
+
+Stephane: Multiple URI entries in SAN... at the end of the call.
+
+Manu: ok, two additions to end of agenda.
+
+Updates to Telecon Bridge
+-------------------------
+
+Manu: VoipBot has been updated to include muting/unmuting controls and 
+disconnecting people, associating IRC names with people, etc. 
+
+Manu: Reto just found a bug that crashes the voipbot, I'll fix it before the
+next meeting. Once that's fixed, we'll have 90% of the functionality that the
+IRC telecon bridges have. Any questions about telecon bridge or queue?
+
+Bug Tracking
+------------
+
+Manu: We probably want to start recording bugs via some kind of tracking system.
+We might miss things at this point. If something is controversial, and there are
+edit bouncing - we should raise those things to issues on the telecon.
+
+Manu: So two things - we should start tracking bugs with the spec, the second
+issue is how to determine when to log a bug and how do we resolve the issue
+on this telephone conversation.
+
+Manu: So, should we log bugs and what's the process for bug tracking?
+
+Reto: Github has good bug features.
+
+Stephane: We started using threads, but that's probably not manageable. Maybe
+we should use the github issue tracker. We could also do inline issues in the
+spec.
+
+Manu: I agree with Stephane, I think github issue tracking is good and we
+don't want to have to deploy a new bug tracking system. I think noting issues
+in the spec is also a good thing, but it would be really good for editors to
+outline problems that have been raised by the community in the spec text. We
+should be very careful not to remove issues from the spec until there is 
+agreement. Henry, I don't know if we want a voting mechanism yet... we can
+just straw-poll for now.
+
+Henry: Makes sense.
+
+Reto: What about a file in git that tracks issues? We can keep open issues 
+in that file.
+
+Manu: So, we could have two different places on where to put bugs?
+
+Stephane: How do we keep the mailing list aware of the discussions happening?
+If it's only in a file, everyone has to know that it exists and understand how
+to access it. The github issues tracker may be better at letting people
+participate in logging bugs.
+
+Manu: Yes, I agree that we want to make this as easy as possible for tracking
+bugs. People need to know that that file is there... that's not good.
+
+Stephane: They also would need write access in order to write to the document.
+
+Reto: File and mailing list would prevent repeated issues - things that are
+only marginally associated with the spec.
+
+Manu: We don't have to solve this on the mailing list just yet... perhaps a 
+straw poll would be good?
+
+PROPOSAL: Use github issue tracker for bugs.
+
+Notes all +1s except for one.
+
+RESOLVED: Use github issue tracker for bugs.
+
+PROPOSAL: Use file in github in to track bugs.
+
+Notes all +1s except for two.
+
+RESOLVED: Use file in github in to track bugs.
+
+Manu: So, looks like we can use both for now. So, we'll use github and include 
+bugs in a file for now, Reto could you tend to the bugs.txt file in github?
+
+Reto: Yes. So we're going to have both?
+
+Manu: Yes, for now - let's use both and see which one people end up using more,
+I'll probably just use the issue tracker. If you could handle bugs.txt, that 
+would be great. Can you take care of that, Reto?
+
+Reto: Yes.
+
+Javascript + Flash WebID Implementation
+---------------------------------------
+
+Manu: There is a pure Javascript WebID implementation now, lots of discussion
+on the mailing list:
+
+http://blog.digitalbazaar.com/2010/08/07/webid/2/
+https://webid.digitalbazaar.com/manage/
+https://payswarm.com/webid-demo/
+
+Manu: Just to clarify, what we were trying to do with this demo is demonstrate
+that you didn't need any browser capabilities or cert management or os cert
+management to perform WebID, you can do it purely in Javascript in Flash. We
+needed to have a very simple way to have WebID working.
+
+Manu: Our concern is that the browser native UI is going to confuse most people.
+Having to use the native OS certificate generation mechanism is going to 
+confuse most people. So, we put together a demo that does all of this stuff
+in the browser.
+
+Henry: So, yeah - it's interesting, but to summarize the points on the mailing
+list is that I'd like to see your site accept normal web IDs so I can log in,
+so I know that your engineers understand WebID as we have it, otherwise, there
+is a danger that your engineers are not in the spirit of what's needed.
+
+Henry: Once we have that working, we need to see how they can work together.
+There needs to be a description of what you're doing - can Flash interoperate
+with native browser WebIDs. I don't think there should be coordination between
+sites before we arrive at one. I'd be interested in getting answers on these
+topics. Make sense?
+
+Manu: Really quickly, we're definitely going to try to get native browser
+WebIDs work. We're hitting implementation problems with that stuff now. So,
+one issue is that when you have multiple SSL websites via Apache, and you
+turn on client-side SSL certificates as optional, Apache actives it for
+every domain. So every domain asks for client-side certificates now. We're
+currently working through the bug with Apache. We can't enable WebID with our
+sites in this case - so this is one of the problems that we're dealing with.
+The specific option is SSLVerifyClientNoCA - there are tehcnical limitations
+in apache that may not make that possible.
+
+Henry: So, that's what we're here for - could you outline this problem on
+the mailing list? We can work out a solution from there.
+
+Manu: Yes, we want to give people options - browser-based, javascript+Flash
+based, etc. It's become somewhat difficult to do this stuff using purely
+browser-based mechanisms. We're trying to stay in the spirit of the WebID
+spec, but we're hitting implementation issues. We'll release source code
+for the demo shortly - so I don't want to make it seem like this is a
+centralized solution, because it isn't. It can be installed on any
+personal website. 
+
+Manu: Any comments about that?
+
+Reto: How I understood the Flash/javascript implementation, the Flash applet
+does the TLS connection, it hands the connection back to the javascript page.
+Something similar could be done with Java instead of Flash. Still, this
+situation is similar - we need an external service for some of these use cases.
+It's not such a complete implementation into the web stack as we might want.
+Encoding all of the communication via TLS is our end-goal, how can we do that?
+
+Dave Longley: We can provide some more information on how the Flash 
+implementation works.
+Just to answer Henry's question - we can interoperate, that's not a problem.
+A quick explanation - all of the TLS is done in Javascript - the only reason
+we're using Flash is to provide the raw socket interface and cookie storage,
+as soon as Web Sockets or LocalStorage matures enough, we can replace Flash
+completely with those things.
+
+Manu: Reto, we'll reelease the source code for everything we've done. In fact,
+it's already out there since it's all javascript. It does't change anythin gin
+the protocol, Henry - it's just that we've implemented the spec in javascript
+and Flash. The only reason we've used Flash is because it has the highest 
+penetration for the technologies that we need to implement WebID. So, hopefully
+this explains it a bit more. We're not trying to reinvent WebID, we're trying
+to do a solid implementation of WebID without using any browser cert
+management stuff. Does that help explain more about what we're doing?
+
+Henry: Yes, that's interesting. What would be interesting is seeing what we'd
+need for interoperation.
+
+Manu: The only thing that one would need for interoperation is installation of 
+the Javascript, Flash and perhaps some PHP files. That's it - everything is in
+a nice bundle that can be placed onto a web server. What we're trying to do
+is make the jQuery equivalent to WebID. All consumers of WebIDs have to do is
+instlal some Javascript and Flash on their site and they're good to go. That's
+the goal - simplicity.
+
+Henry: So, once concern I have... we're going to have to look at this carefully,
+you are comparing login Javascript+Flash ID with a normal login, you're really
+speaking about the advantages of this vs. normal login. You were going over the
+sequence of steps to create an account with a normal login using e-mail, and
+foaf+SSL. NOrmal logins, it's not really. the point isn't to really do a normal
+login, it's to create a global login. It's very important to have a RDF data
+store, linked data is very important. So, that's why I'm a bit dubious about
+doing this in javascript - Javascript doesn't have namespaces, the mapping
+of Javascript to RDF isn't clear, those are my hesitations. I'm a bit worried
+about the Flash element of this - that seems to be ... it's interesting at the
+same time. We need to looka t this in a lot of detail.
+
+Reto: The approach you've taken is good for certain use cases, not for others.
+The flash javascript approach ever single page cannot include this Javascript,
+it needs to be done in the authentication. Another mechanism needs to be used
+for authentication to non-SSL resources... so one doesn't replace the other.
+native browser-based is for secure SSl traffic, flash is for login, perhaps.
+
+Manu: Yes, each approach has it's strengths. Someone on IRC said that Apple
+doesn't support flash. Well, that's when we fall back to the browser-based
+mechanisms. Reto, you're right - there are certain platforms that lend 
+themselves more to others. 
+
+Reto: I don't think it's platform, I think it's the stage of development. In
+the ultimate scenario, this will be built into the browser. In the long term,
+browser is the way we want to go. In the short-term, flash and Javascript can
+get us there.
+
+Manu: Henry, you said that you don't know where Javascript and Linked Data mesh,
+we're not saying that this stuff replaces the linked data mechanism at all. 
+What we're saying is that we are following the WebID spec. We're still using
+the full spec, we're not trying to change that, we're just implementing WebID
+using Flash+Javascript. There is no danger that we're going to go away from
+what the WebID spec is currently saying.
+
+Henry: Well, that's cool. We just need to see how its working and we need to 
+see it interoperate. There will be a very important, we need you to iron out
+these interoperability concerns. There could be that getting WebID to work in
+Flash and Javascript woul dopen up new ideas. So you're using Flash as local
+storage, but there is really no reason for local storage when you have remote
+storage, right? Unless you play with these concepts... it's a good philosophical
+attitude, empty your mind of predujices, do it completely without local
+storage. Then prove that you absolutely need it, but if you use flash you
+get lazy. In fact, there may be some other way of doing it... is it really
+important to have it locally? I need to be able to login with WebID into your
+site. There may be a way to solve this that you haven't thought of yet. There
+is just a different way of talking about these issues... this Web 2.0 way of
+thinking loses site of the interoperability issues. We can help you work this
+out and then we can do the opposite, use your system to login on our site. In
+the presentation you gave, you gave this issue list, there's flash there's
+javascript, there is a whole bunch of peoblems and these problems are not
+unimportant, yet they provide interesting uses. It's a complicated new space
+to explore. I just wish that when you had presented it that you had shown that
+you're into WebID in the way that we've done it now.
+
+Manu: We can't get around the local storage issue because you have to store your
+private key locally. That's all we're using it for. That's the way WebID is
+designed. That's the way that the browsers store private keys - locally.
+
+Henry: Yes, that's fine... 
+
+Doug: So, I think Henry's point is taken. We are talking about an initial
+implementation here and we're talking about one done in script. I don't know if
+drilling down into the details of the script implementation is all that
+useful. Any implementation gives insight into problems that needs to be worked
+out in the spec. I don't think that we should dwell on existing implementations
+today. The goal is to get this technology into the browsers. A different 
+technique to do cryto or local storage, these are issues that you need to get
+around because you're doing a script implementation. This is not the ideal
+implementation, but we can't expect it to do everything that a native 
+implemenetation woudl be able to do. The fact that it only works in Chrome 
+because of the crypto... that's an issue.
+
+Manu: That's not true anymore, it works in more browsers now. It's just that
+we didn't have the time to work through the engineering issues in the other
+browsers. I agree with you Doug, this is not ideal... but what we're 
+demonstrating is that you can do this without native browser technology.
+
+Doug: Yes, but the point isn't the javascript implementation, it's that the
+spec is outlining what should eventually happen.
+
+Manu: yes, right. I agree with you on that point.
+
+Manu: Anything else on this issue before we jump to spec language?
+
+Henry: I suppose this issue does highlight many interesting points, such as
+the user interface issue... which is important to look at. The point that 
+Internet Explorer... looking at different browsers, making a table, saying
+which browsers are easiest in Flash+Javascript helps,  what we want is to
+make browsers easy to use. We go to the manufacturer and tell them that
+/this is how it works now/ but /this is how it could be in the future/. We
+need more testers in Internet Explorer, there may be deep hacker tricks so
+it's easy. Opera or Chromium. Those are issues that you've brought up with the
+flash that are really useful... the user interface issues that you've brought
+up. Your implementation is kicking the browsers in the teeth, so we can use
+that to grow the community. Perhaps we can see if we can do it with Java too.
+
+Manu: We're all marching towards the same thing, we just have different ways
+of getting that. That's perfectly fine, we just need to make sure that the
+spec supports these things fairly well.
+
+WebID Profile Serialization Format
+----------------------------------
+
+Manu: There was general agreement on the mailing list such that ii supports
+alternate formats, but we write the examples in HTML+RDFa in order to influence
+the technology that people start choosing. There was a comment on the
+WebID mailing list that WebID profiles should be human readable. There was
+rough consensus that none of the language should be a MUST - no RDF, RDFa, 
+TURTLE, etc. What we can say is that if the client asks for text/html, you MUST
+respond with an HTML+RDfa document. Is taht what the general consensus was?
+
+Henry: No. There are two clients - if the client is the Relying Party, the
+shop that people want to log into, the client - it should ask for something 
+like ordered mimetypes, there is a certain order that is reasonable. The
+pure RDF formats first, XHTML the lowest. Not because it's less good, but
+simply because many sites may do content negotiation, but not have RDF inside
+the HTML. That's how I think ... Reto, can you paste an accept header in 
+IRc somewhere? The WebID provider need only provide one well known format.
+The request should understand and consume as many as possible. If we can
+get GRDDL working, we can get */* working. A JSON format that is RDF-izable
+would also be good. We should have something that's updated regularly, a 
+list that has formats that are seen inthe wild. Currently it's RDF/XML and
+RDFa, I think... most understand TURTLE.
+
+Manu: Is there consensus on the mailing list for that?
+
+Henry: Oh, that's what I wanted to ask - which implementations support which
+formats. If 100% support RDF/XML, then presumably, that's what any 
+implementation should support. 
+We should have an idea of who has implemented what. As far
+as the consumer/client goes. We can also have a table of who is publishing.
+If consumers only consume RDF/XML, then the producers should only produce
+RDf/XML. This is the problem of convention, we are trying to meet at a meeting
+point, we can only follow a convention by understanding whta the implementations
+are doing.
+
+Reto: I think there is a difference between normative language and convention.
+We need to figure out what the spec text is going to mandate, which will
+probably align with convention. The consensus was RDF/XML and RDfa MUST 
+support those two. Now we have TURTLE in the spec draft.
+
+Manu: Right, that confuses the issue. We can say that the spec can use any
+format, but that creates the problem that we now have to support lots of
+RDF serialization formats. It creates code bloat. Ideally, we'd consume
+XHTML+RDFa only and leave it at that... and maybe RDF/XML - but that requires
+us to pull in a big RDF/XML parser library. We really don't want to support
+more than that.
+
+Manu: Reto, I don't know if you're worried about code bloat. We're worried about
+interoperability and we don't want to support 10 different types of RDF
+formats.
+
+Reto: yes, the compromise was to mandate two on the verification side and be
+completely open on the WebID profile side. Of course, you want to have a profile
+that interoperates with everyone. 
+
+Manu: Yes, I certainly agree with that. I don't know if Henry does or not. Is
+that what's in the spec right now?
+
+Reto: I don't know... will have to look.
+
+Manu: Having those examples in the appendix would be good.
+
+Henry: What we have is that we have implementations currently in Ruby and
+Python, Perl, Scala, C that use RDF/XMl without a problem, RDFa, it's a question
+of being open. Apparently, if you want to be WebID club you have to do /this/.
+If someone comes along and says they can add 100 million new users if we just
+encode in that way, we don't want to close that door. It's going to be easy 
+to get them to add GRDDL to it, if they get stuck, as they will, they will
+get stuck and they will think their format is godgiven and they have done
+excellent work, so we want to keep open to them. We don't want a format war.
+We just need the semantics to be right. The semantics is a MUST. In the spec,
+we'll have RDF/XML and RDFa - so those are well known. If people want to push
+and implement new things, just use those two.. but the spec isn't going to
+impose anything on anyone that makes. The only way to get them to join this
+community is to stay open about this stuff.
+
+Jeff: Perhaps it isn't the best time to ask this question, two questions really.
+1) what is the relationship between W3C and the WebID spec as it is right now
+and 2) What is the status with the W3C proposed WebID working group.
+
+Manu: Right now, this is a completely independent group of the W3C. Our goal is
+to start work on something like WebID. Doug had said that W3C might start looking
+at technologies like WebID, OpenID, OAuth, and start a WG that is more focused
+on this stuff. Right now, we're completely separate from W3C. The hope is that
+one day the work will be moved to W3C.
+
+Jeff: So youre working on the WebID spec with the hope that it'll eventually
+be moved into W3C grops.
+
+Henry: This is kind of like the Atom group before it went to the IETF. We want
+to make the work more formal and eventually roll it into W3C. But if we wait
+for W3C, it may take forever, so we're just doing the leg work until W3C thinks
+they should get involved, in the mean time, create momentum.
+
+Manu: Top of the hour, anything else we should be aware of over the next two 
+weeks? Anything going on, any announcements?
+
+Reto: I posted my proposals for spec editing. Make lines less than 80 characters.
+Don't just reformat because you think it looks bad. If you create/modify lines,
+make them less than 80 characters.
+
+Manu: That hasn't worked out traditionally in W3C specs, but we can talk about
+that after the telecon. Next call in two weeks? Work for everybody?
+
+General agreement...
+
+Manu: Thanks for joining, will speak in two weeks.
+
+*Meeting adjourned*
+
+Reto and Dave Longley stayed on the phone call to discuss Flash+Javascript
+Implementation details.
+
+Flash+Javascript Implementation Details
+---------------------------------------
+
+Reto: Dave are you still on the line? 
+
+Dave Longley: Yes, I'm here.
+
+Reto: Let's keep the spec text to under 80 character lines, but don't reformat
+the entire document. Unless we want to do one huge reformatting pass.
+
+Reto: The JS+Flash implementation, if the other side has an image, how does
+the server know who is requesting the image? 
+
+Dave Longley: The way the server interacts with the JS+Flash interface is the same
+way that it would occur for the browser's TLS connection. JS+Flash is just a
+drop in replacement for TLS. So, it's the same.
+
+Dave Longley: They have a certificate that identifies you, your WebID. And they use
+that certificate in TLS. So, the only difference is the TLS is done in 
+Javascript instead of natively in the browser.
+
+Reto: Ok, so it would get the certificate from the TLS connection.
+
+Dave Longley: It would work the same way that WebID would in any other case.
+
+End of minutes.
+
