@@ -1,0 +1,216 @@
+Attendees: Stephane Corlosquet, Manu Sporny, Henry Story,
+Benjamin Heitmann, Dave Longley, David I. Lehn, and Reto Bachmann-Gmur
+
+Scribe: Manu Sporny
+
+Audio logs: http://getwebid.org/meetings/#2010-09-07
+
+Agenda:
+
+1) Multiple URI issue in the SAN extension:
+   http://github.com/msporny/webid-spec/issues/#issue/2
+2) Selective presentation of WebID-only certificates:
+   http://github.com/msporny/webid-spec/issues#issue/3
+3) Shift to Community GitHub account:
+   http://github.com/msporny/webid-spec/issues#issue/5
+
+Minutes:
+
+
+Agenda:
+http://lists.foaf-project.org/pipermail/foaf-protocols/2010-September/003525.html
+Manu: (goes over agenda)
+
+Topic: Multiple URI issue in the SAN extension
+
+http://github.com/msporny/webid-spec/issues/#issue/2
+Manu: Stephane could you introduce the issue?
+Stephane: Yes, I came across some of the decentralized issues of WebID -
+you still need your WebID provider to be there for WebID to work.
+hello guys
+Stephane: We should have multiple URI entries, but it's not very well
+defined.
+Stephane: We should say how implementations should deal with it in the
+specs.
+Stephane: There are already some implementations using the multiple URI
+feature.
+Stephane: Another issue is whether or not we should authenticate all of
+the URIs in the SAN.
+Stephane: This how it could work:
+Stephane: The first time that you go onto a site, the website should
+check all URIs.
+Stephane: It's one way that we can do these owl:sameAs assertions.
+Stephane: I don't know if we should detail this in the WebID spec.
+there needs to be a howto spec or something
+Stephane: That's basically it...
+Stephane: WebID should say something about what to do when there are
+multiple URIs.
+bblfish has the floor. The speaker queue is empty.
+Henry: The language should be quite easy - any authenticated WebID...
+you can name the same user using multiple URIs.
+Henry: A server could authenticate the first one and track the others in
+the background.
+Henry: They could also be checked in parallel
+Henry: You can only use handles that are verified.
+Henry: So, say there is one that ... someone logs in, there is only one
+handle that is verified, so it has lower security.
+Henry: It falls into the lower-security zone.
+Stephane: Let's say you log in w/ a low-security WebID, you may need to
+use one of the other WebID's with higher security for your bank.
+Reto: The only question is whether an identity is a functional property
+of the WebID.
+Reto: Different levels of trust may be going too far.
+Stephane: Quick question on the ontology - is there a way to model this
+multiple URIs in SAN and the multiple levels of security via WebID?
+Henry: We haven't formalized this yet.
+Henry: That's a different WG with a different task - it's complicated...
+there are many assumptions one would need to make.
+Henry: There is certainly a logic of trust somewhere... there will be
+disagreement on which one would be the good one.
+Stephane: Yes, this sounds like it would be server-side.
+Henry (IRC):
+identity a rdf:Property;
+vs:term_status "unstable";
+rdfs:comment """
+the identity of the public key. This is the entity that knows the
+private key and so can decrypt messages encrypted with the public key,
+or encrypt messages that can be decrypted with the public key. It can be
+an Agent, or an idirect identifier of an agent such as afoaf:OnlineAccount .
+Should one specify the range as being the union of those two classes, or
+should one leave this open?
+""";
+rdfs:domain :PublicKey .
+Can you write that down?
+
+Manu: is what we want to say, basically: At least one URI in the SAN
+field must be verified.
+When the server is verifying the WebID, at least one URI in the SAN
+field must contain a WebID that is paired with the public key provided.
+
+Stephane (IRC): 404 or missing/mismacthing public key
+Manu: So, you start at the beginning - and go through from top to bottom.
+yes makes sense
+Reto: I think it'll be easier to separate the WebID claim from the
+verification process.
+a certificate is a number of webid claims
+Reto: The claim in the x509 certificate is the URI in the SAN field.
+Reto: Verifying is checking the URI in the SAN field.
+the claims is a verified by checking by derferencing, or other...
+Manu: Is the format multiple URIs in one SAN field, or multiple SAN
+fields with one URI per SAN field.
+Manu: Is SAN field opaque?
+Henry: no, SAN fields are typed.
+I think so missed the last bit
+PROPOSAL: Support multiple URIs in WebIDs via SAN field.
+Manu: +1
+Stephane: +1
+Henry: +1 that is already in X.509 we can't be against :-)
+Reto: +0
+Reto: I can see some advantage of multiple URIs in WebID, but it also
+means increased complexity. Can't tell if one really outweighs the other.
+Reto: My original, proposal had just supporting on URI.
+Reto: Yes, I pointed this out on the mailing list - if there is the risk
+that your host goes away, then it's a bad WebID provider.
+Reto: You have to fully trust that the domain won't go away.
+Henry: There is another case here that one could think about - you could
+have another WebID that points back to your client machine.
+Henry: If your WebID provider goes away, you can still use WebID if you
+have two URIs - one to your provider, another to your home account.
+RESOLVED: Support multiple URIs in WebIDs via SAN field.
+my point there was that you could have your client computer be a webid
+hoster, so that the only 2 machines up on the internet would be you and
+the service connecting to
+Manu: We need to write the spec language and see how multiple URIs
+should work in SAN.
+Stephane: I can try to add this to the spec
+http://github.com/msporny/webid-spec/issues/#issue/2
+Stephane: This covers issue 2, we can close it.
+
+Topic: Selective presentation of WebID-only certificates
+http://github.com/msporny/webid-spec/issues#issue/3
+Manu: We need a mechanism to select WebID only certificates.
+Henry: You can select certificates via the Distinguished Name field in TLS.
+Henry: It's possible to use the DN field to select WebID-only certificates.
+Henry: Most websites will only ask for client-side certificates based on
+the Distinguished Name field.
+Henry: The list could contain 20-50 certificate authorities that the
+server trusts... but there is no widespread use of client-side certificates.
+Henry: We just need to come up with a distinguished name - the Java code
+that I'm producing, we've made up a Distinguished name.
+Henry: The reason we didn't add that to the spec is because it's going
+to constrain all of us... we need to come together and create
+certificates that have the same DN.
+Henry: We all have to agree on this.
+Henry: We need to figure out if this leads to consistencies re: TLS - we
+need to see if there are any side-effects.
+Reto: It should be possible to have a WebID certificate signed from a CA.
+Stephane (IRC): call it cutting on my end, can't hear manu-dbw very well
+Reto: As we propagate user's to have WebIDs in their clients, I don't
+know if this is an issue?
+Stephane (IRC): am I the only one to have difficulties hearing manu-dbw ?
+Manu: the problem is big corporations, banks, univiersities that provide
+TLS client-side certificates. We need to be able to filter these.
+Manu: So, right now, we think we can filter by distinguished name... is
+there another mechanism?
+just looking
+Henry: http://foaf.markmail.org/thread/qw4xrtcnui7seuht
+Dave Longley (IRC):
+the certificate request message looks like this:
+* opaque DistinguishedName<1..2^16-1>;
+*
+* struct {
+* ClientCertificateType certificate_types<1..2^8-1>;
+* SignatureAndHashAlgorithm supported_signature_algorithms<2^16-1>;
+* DistinguishedName certificate_authorities<0..2^16-1>;
+* } CertificateRequest;
+Henry: We need more investigation on this issue.
+
+Topic: Shift to Community GitHub account
+
+http://github.com/msporny/webid-spec/issues#issue/5
+Stephane: issue: http://github.com/webid is already taken
+Stephane: Do we need to pay for an account?
+bblfish: that's kind of OT, and we discussed this during the last telcon
+(re bug tracking)
+Stephane: Well, the issues will have to be moved. The WebID name is
+taken on github.
+http://github.com/webid-community/webid-spec would work for example
+
+Reto: I'm fine with the current decentralized approach - since there is
+no established group structure, we're a loose group, the current
+solution works, imho.
+Reto: I don't see a need to change this at this point.
+Henry: perhaps something to be pushed back… Mhh
+Henry: sounds like a good idea too
+Stephane: not sure how it works
+Manu: Sounds like we don't feel very strongly about this...
+Stephane: Perhaps we should move this over before we have too much
+history to move over...
+Stephane: That's an argument in favor of moving...
+Henry (IRC): I have webid.info btw
+Stephane: Someone new coming to webid might think that it's backed by
+Manu because it's using Manu's account... or digital bazaar.
+Reto: If it's not possible to extract bugs, I have an issue with the bug
+tracking system.
+Manu: I'm looking at - http://develop.github.com/p/issues.html
+Manu: We could use the API to do this...
+Stephane: There is a likelyhood that we'll be able to move stuff in the
+future.
+Stephane: These guys are usually very open when it comes to this stuff.
+Manu: Reto, does that work for you?
+Reto: Yes.
+Henry: my thought was just that we could leave this issue until next call
+Stephane: I think we should do it asap
+Manu: I'd like to create a new repository...
+Reto: +.9
+Henry: How would account management work?
+Manu: Our company would purchase the account, put all of you on as
+administrators.
+Stephane (IRC): We should also put getwebid.org on the community github
+account - http://github.com/digitalbazaar/getwebid.org is the source of
+the site
+Henry: I think it's a good idea, let's put it out to the mailing list,
+see if there is any feedback
+Henry: seems fine to not take a decision
+Manu: Ok, let's put that to the mailing list and see what they have to say.
+
