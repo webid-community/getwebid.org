@@ -1,0 +1,211 @@
+Attendees: Stephane Corlosquet, Reto Bachmann-Gmur, Manu Sporny, 
+Henry Story, Dave Longley, and David I. Lehn
+
+Scribe: Reto Bachmann-Gmur
+
+Agenda:
+
+1) WebID news and mailing list discussion
+
+2) WebID Errors and HTTP Status Codes
+   http://github.com/msporny/webid-spec/issues#issue/8
+
+3) Easy cross-browser certificate transfer
+   http://github.com/msporny/webid-spec/issues#issue/4
+
+4) WebFinger integration in the spec
+   http://github.com/msporny/webid-spec/issues/#issue/10
+
+5) Any other business
+
+Topic: WebID news and mailing list discussion
+
+Manu: has there been major discussions on the list
+Stephane: multiple san uri is biggest change in the spec
+Stephane: other issues... using DER instead of regular certificates
+Reto: othe discussions: long term keys
+Reto: What do you do with short-lived keys?
+Reto: As long as you dereference WebID, you're fine... but what if you want to optionally allow WebID association and signing?
+Reto: Signing browser cert with WebID could be one way to do this.
+Reto: So, in the browser you could sign the certificate.
+Reto: Proposal would be to allow this without mandating it.
+Henry: I'm trying to find an n3 model of access, control, ssl , tls this would help go through the reasoning of different proposals, and their affect on security and other features it seems to me. unless I understood reto's proposal really badly, by removing the public key we remove the ability to say that a certificate is no longer valid... by removing a public key from the profile we can do something which in tls is really complicated... Revocation list... there is revocation lists and another protocol which are both made unnecessary by online validation of keys also there are other features like using the subject alternative name... one of reto's key points and motivation I think is that you can also sign... server certificates... there is the perspectives project which can be sued for server cert verification... so we could use this for verifying server certs
+Manu: we will still have the current possibilities
+Henry: we should make more detailed proposal... looking at the semantics of tls... to see if something improves security
+Henry: this is something tha should also be discussed aat a webid conf
+Manu: reto I though you have anotherpoint? is there a solid proposal
+Reto: No solid proposal yet, i've been talking to Bruno and how this might work over TLS.
+Henry: it doesn't have to be too solid... initially :-)
+Henry: point of order, are we following the topics?
+Manu: please use the queue
+Henry: hmm can everyone hear what I'm saying?
+Manu: yeah, think it's you, Henry
+Henry: manu was asking you to use the queue
+Reto: Enabling long-term keys so other ways of security are possible. We should look at perspectives protocol... "reasonable security"
+Reto: We should delegate this stuff to the Perspectives project... their security is based on user interaction "Do I want to take this risk for this situation." - not meant for automated security.
+Henry: having problems with Blink? just rebooted Not sure if it is my network... I'll try again... can't hear anything
+Manu: first item on agenda
+
+Topic: ISSUE-8 HTTP Status codes
+http://github.com/msporny/webid-spec/issues#issue/8
+
+Stephane: did we go through the possible errors?
+Manu: it doesn't make sense to bubble up tls errors to the http layer
+it seems like breaking the encapsulation between tls and http
+there might be other error conditions affection http
+however this would tie the spc to http
+we could have an optional clause for http
+Reto: which would be errors that are not on the tls level?
+Manu: acl related stuff
+if somebody accesses something she isn't allowed to access
+would get forbidden
+Reto: WebID protocol is about authentication, authorization is out of scope.
+Reto: Might be some interaction, authorization issue - user may want to authenticate.
+but acl is a good thing to discuss on foaf-protocols
+Manu: it sound we don't have enough information and solid usecases
+proposal to postpone
+no objection
+Henry: ah ok... that could be interesting... yes. makes sense
+
+Topic: Easy Cross-browser certificate transfer
+http://github.com/msporny/webid-spec/issues#issue/4
+
+Manu: its basically about transfering webid from one browser to the next
+one cert per browser is what you need, but google says they already tested the approach
+so their approach is that the private key is in the cloud
+http://www.links.org/files/nigori/nigori-protocol-01.html
+and only decrypted by the party you really trust your identity to
+the cloud can be as secure as encryption
+Henry: I agree with manu
+you have a lot of options
+like uri, password, sms one time password
+if google is using one-time passord
+this makes it easier
+the problme on public terminal
+is when you decrypt your private key there, it's available to the client
+Reto: Having private key in the cloud (missed).
+yes, there are a number of options. the google option Requires user to remember a URL+password. If you are on a public terminal those will be noticed, and then can saved.
+Reto: This is very similar to using browser key to .. private key on the host that you're... one hour certificate, sms to log in... reasonable for public terminals.
+Manu: i wanted to point out
+that there is no download of the private key to the public terminal, the public terminal never sees the private key
+it works like oauth
+except its more app friendly
+Henry: oh so then you are moving to oauth, or open style
+Manu: that's a different protocol
+tehre's no difference to having a webid provider out there
+you need username an pwd
+Nigori protocol
+Manu compares webid to nigori protocol
+Manu: webid could work well with nigori
+this are not compeeting technologies
+we keep coming back to the public terminal
+first discuss mechanism were openid
+and now reto's proposal of having key signed by webid
+with Nigori, you have your private key in the cloud
+Henry: ok
+Manu: the key point is you (almost) don't need to ever have your secret key unencrypted
+
+Topic: TLS Client certificate selection
+
+Henry: last week we had issues
+one was the tls client cert selection?
+nobody commented on it
+Henry goes off to a link to the e-mail.
+
+Topic: WebFinger integration in the spec
+http://github.com/msporny/webid-spec/issues/#issue/10
+
+Manu: should we mention webfinger as a potential webid discovery mechanism
+webfinger works more with public terminal problem again
+you don't have a browser that is capable of using a client cert
+they might use nigori protocol
+we can't tell them that they have to enter there webid
+probably
+maybe just the domain? that would work
+but for public terminals we could support discovery of webid though webfinger
+Henry: what we discussed is using webfinger in the cert
+Henry: it is feasible even if its a bit a longer way to get to your profile
+Manu: webfinger is a usability trick, we can use it to solve the public terminal problem
+when you gives somebody a login dialog
+if they can't select the webid in the browser they can enter email
+the only real piece of information people can memorize
+is the email address
+well two things actually
+login to social network site might be remembered as well
+so twitter or facebook login would work as well
+but using webfinger to ask for email address would be easier
+we are depending on webfinger
+as a a backup meachnaism for getting to the webid document
+Henry: it seems like a good idea
+there is the Nascar problem
+there will never be a login box
+because the server can verify that the client has a wbid
+before http connection
+so if there's a webid no need to show the nascar box
+Manu: are you saying that the way this mechanism could work
+they go to the http website
+a login button on the top
+you may not want to give the webid on first connection
+so you want them to click login button
+Henry: if browser gets better and in future you'll have everything behind https
+in the browser you can easily select a certificate
+Manu: the case we're talking about is what happens when they don't have a webid
+if we don't have a nascar box we just ask for the email
+in the ideal future
+either webid or type in your email address
+Henry: there's nothing simpler than entering an email
+trying to see the link from openid to webid
+....
+henry describes mechanism
+Manu: you could do OpenID, or use nigori+WebID
+you can discover profile
+with email
+Reto: what could happen with clereza, there is an email to find WebID, still have the password issue
+Reto: clereza can provide the WebID
+Reto: if on public terminal, I have to remember where I got my WebID (webfinger can be useful) but I stil need the pwd
+Reto: temporary certs for this public terminal seems more appropriate
+Manu: there ar multiple ways: password, temporaary certs, nigori
+Reto: if you're on pub term, you still need a pwd, like a one time pwd
+problem, what do you use this pwd for? like non webID stuff like openID
+Reto: do you need one pwd for one or many pwd? for WebID you need max 1 pwd (or zero when on your machine)
+Henry: askes Manu to describe more in detail
+how webfinger and webid can interact
+Manu: the biggest push back is the publc terminal problem
+this a way that is most often to used to dismiss the WebID 
+Henry: agrees that the public terminal thing always comes up
+back to google sms one time pwd
+its a complicated issue
+what we should do is say, yeah in that case use openid qith one time pwd
+Manu: we need something to tell people about the WebID problem
+Stephane: should we wrap up the call?
+Manu: yes, we need to end the call.
+Henry: I can see where manu is coming from
+imagine joe smith going to a public terminal
+he goes to his favourite website
+he doesn't understand he has to go to his personal profile space to login
+you and me we know we go to clerezza.me and do what is needed
+not so joe
+he enters the email address
+the profile is found
+the site sees a lot of certs
+and say "hey joe, you probably have to go there, rather than enter a pwd here"
+
+Topic: Any other business
+
+Manu: next 2 weeks?
+Henry: orghanizing webid summit
+not in the next two weeks
+there should be an european version
+as most of us are in europe
+or simultaneously something in america
+because we can't go without the americans
+the pub key thing
+which hopefully works out on the list
+on october 15
+identity workshop in london
+would be good to have a few people to go there
+if could present something
+Manu: good idea
+
+End of minutes.
+
