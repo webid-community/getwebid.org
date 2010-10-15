@@ -1,0 +1,112 @@
+Attendees: Manu Sporny, Henry Story, and David I. Lehn
+
+Scribe: Henry Story / Manu Sporny
+
+Audio logs: http://getwebid.org/meetings/#2010-10-05
+
+Agenda:
+
+1) WebID updates/news
+2) Differentiate between the identifying agent and the user operating
+   the identifying agent
+3) Simplify how public keys are expressed
+
+Minutes:
+
+Topic: WebID updates/news
+
+New community repo: http://github.com/webid-community/
+first news item: Stephan working on WebID community repository
+Stephane Corlosquet
+no payment
+for github
+WebID response from news industry companies
+manu talked to major news agencies about webid
+News industry felt threatened by WebID
+They needed demographics on their customers which they get 
+              from the forms people fill in
+so if they could have something where people can guarantee 
+              demographics info they would be more interested
+so the threat is that their competitors can gather their 
+              demographic information that they can't
+So answer is: 
+ - micropayments solution
+ - people will be able to access to their news
+ - decentralises identity to large competitors don't know
+WebID response from music industry companies
+positive feedback from music industry
+they'll use it when it's done
+Henry: Sometimes it is easier for smaller players to take the 
+               risk than the larger companies.
+Henry: Went to Open Web Conference... 
+Henry: Person behind GNU Public LIcense gave a talk
+Henry: Eben Moglen
+noted that some are more likely to come along for 
+               good ethical purposes.
+Henry: You need a good bit of thinking on ethics/values for 
+               something like WebID - we are seeing goodwill because of that.
+Henry: When people hear about WebID, they recognize it and 
+               it's more present than it was a year ago.
+Henry: I got webid.info - just put it up.
+Henry: We have a virtual server at DERI
+Manu: Let's merge getwebid.info and webid.info into the same 
+               site
+Manu: put it up at webid.info
+Henry: Do we have an interesting demo to use WebID with git 
+               or svn?
+Manu: I don't think we do at the moment.
+I've used the keys with git last night..
+presbrey has done svn + webid
+ah yes
+apologies, half here, wanted to join tonight but parents evening 
+            @ school in half an hour
+ah ok
+http://lists.foaf-project.org/pipermail/foaf-protocols/2010-October/003849.html
+
+Topic: Differentiate between the identifying agent and the 
+               user operating the identifying agent
+
+http://github.com/webid-community/webid-spec/issues#issue/11
+Manu: What does the Identifying Agent represent?
+Henry: It's really just whatever you say it is in the FOAF 
+               file - there could be a subclass for user agents
+Henry: We may need WebIDs for robots in the future.
+Henry: Relation from a Person to a User Agent.
+Henry: Companies could have User Agents that is a crawler - 
+               which has its own WebID.
+
+Topic: Simplify how public keys are expressed
+
+http://github.com/webid-community/webid-spec/issues#issue/12
+Henry: There is an image that I put up today concerning this
+Henry: There are so many ways of doing this - we may not want 
+               to anticipate what people want.
+Henry: We don't want to simplify too early.
+http://lists.foaf-project.org/pipermail/foaf-protocols/2010-October/003860.html
+http://lists.foaf-project.org/pipermail/foaf-protocols/attachments/20101005/d8488b89/attachment-0001.jpg
+request we gauge consensus in the community, as a single simple 
+            issue, without mixing it up with other issues, just "webid with 
+            one triple, yes or no", strawpoll/vote whatever, then discuss 
+            again
+Henry: Need a link from a user to a public key to simplify
+webr3 has to shoot :( /gone
+Henry: Dan is willing to add something to FOAF if PKI is 
+               useful to FOAF
+Manu: It would be nice to see a simpler mechanism than we 
+               have now.
+Henry: Dan wants pointer from foaf:publicKey to DER-encoded 
+               string.
+Henry: Maybe DSA?
+Manu: RSA seems to be working for most people.
+:me cert:controls "ASDASD"^^cert:derEncoding .
+Henry: So, it's just a couple of additions to a vocabulary - 
+               this might be nice to have.
+Manu: We want to be careful to not complicate this too much - 
+               implementations need to remain simple.
+Henry: Yes, well PGP people might want something more in 
+               there. If Identica comes along and says they need one 
+               relation to one thing, we can point them to foaf:publicKey.
+Henry: Others might come in and request something like 
+               facebook:publicKey - we shouldn't guess, if they start 
+               publishing public keys, we'll discuss it at that point.
+
